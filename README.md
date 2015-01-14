@@ -6,7 +6,7 @@
 ![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-03-46.png)
 ![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-04-27.png)
 ![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-05-09.png)
-AutoSlideViewPagerAndPoint使用示例
+# AutoSlideViewPagerAndPoint使用示例 #
 
 ----------
 
@@ -42,5 +42,4 @@ AutoSlideViewPagerAndPoint使用示例
 	limitations under the License.
 
 
-wudkj
-1/14/2015 9:13:22 PM 
+显示的图片来源于网上，如果有问题，请联系：wudkj@163.com
