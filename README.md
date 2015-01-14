@@ -2,7 +2,10 @@
 可以无缝自动滑动的viewpager，适合做首页上方的广告条
 
 使用了ViewPager来实现，脱离xml文件
-
+# 效果 #
+![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-03-46.png)
+![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-04-27.png)
+![image](https://github.com/wudkj/AutoSlideViewpagerAndPoint/raw/master/Screenshot/Screenshot_2015-01-14-21-05-09.png)
 AutoSlideViewPagerAndPoint使用示例
 
 ----------
@@ -23,5 +26,21 @@ AutoSlideViewPagerAndPoint使用示例
 不需要将整个项目作为library来引用，只要将Zhang_ViewPagerAndPoint拷贝到你的项目中就可以
 
 也可以通过builder来实现，不过builder写的不是很好，但是功能是完整的
+# LICENSE #
+					Copyright   2015    wudkj
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+		http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+
 
 wudkj
+1/14/2015 9:13:22 PM 
