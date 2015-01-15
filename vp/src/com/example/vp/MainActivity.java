@@ -23,23 +23,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         l=(LinearLayout) findViewById(R.id.sdss);
         ArrayList<ImageView> lists=getImages();
-        ArrayList<ImageView> lists2=getImages();
 		final Zhang_ViewPagerAndPoint vp=new Zhang_ViewPagerAndPoint(MainActivity.this,lists);
 		vp.startRoll(new Handler());
-		vp.removeAllImageViews();
-		vp.addImageViews(lists2);
-		ImageView iv=new ImageView(MainActivity.this);
-		iv.setBackgroundResource(R.drawable.item05);
-		final ImageView iv2=new ImageView(MainActivity.this);
-		iv2.setBackgroundResource(R.drawable.item06);
-		vp.addImageInHead(iv);
-		vp.addImageInBottom(iv2);
 		vp.setOnPagerClick(new onPagerClick() {
 			@Override
 			public void pagerDoSomething(View imageView, int positon) {
 				Toast.makeText(MainActivity.this, ""+positon, Toast.LENGTH_SHORT).show();
 			}
 		});
+		vp.setTIME(3000);
 		vp.setOnPagerScrolled(new onPagerScrolled() {
 			
 			@Override

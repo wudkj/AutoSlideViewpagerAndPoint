@@ -7,6 +7,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,7 +29,6 @@ import android.widget.Scroller;
 import com.example.vp.Zhang_ViewPager.onPageScrollStateChanged;
 import com.example.vp.Zhang_ViewPager.onPagerClick;
 import com.example.vp.Zhang_ViewPager.onPagerScrolled;
-
 
 /**
  * @author 张小康 E-mail:wudkj@163.com
@@ -68,7 +69,8 @@ public class Zhang_ViewPagerAndPoint {
 	 */
 	private int mLeftMargin = 0;
 	/**
-	 * 默认为{@link #GRAVITY_LINE_CENTER}显示，其他还有{@link #GRAVITY_LINE_LEFT},{@link #GRAVITY_LINE_RIGHT}
+	 * 默认为{@link #GRAVITY_LINE_CENTER}显示，其他还有{@link #GRAVITY_LINE_LEFT},
+	 * {@link #GRAVITY_LINE_RIGHT}
 	 */
 	private int mGravityType = 0;
 	private onPagerClick pagerClick;
@@ -77,7 +79,7 @@ public class Zhang_ViewPagerAndPoint {
 	private int dot_focus = android.R.drawable.presence_online;
 	private int dot_normal = android.R.drawable.presence_invisible;
 	/**
-	 *	点的高度，默认为15
+	 * 点的高度，默认为15
 	 */
 	private int dotHeight = 15;
 	/**
@@ -312,9 +314,9 @@ public class Zhang_ViewPagerAndPoint {
 
 	/**
 	 * @param mGravityType
-	 *            包含有点的那一行的显示位置
-	 *            可使用{@link #GRAVITY_LINE_CENTER}来表示居中，或者{@link #GRAVITY_LINE_LEFT}来表示
-	 *            靠左，或者{@link #GRAVITY_LINE_RIGHT} 来表示靠右
+	 *            包含有点的那一行的显示位置 可使用{@link #GRAVITY_LINE_CENTER}来表示居中，或者
+	 *            {@link #GRAVITY_LINE_LEFT}来表示 靠左，或者{@link #GRAVITY_LINE_RIGHT}
+	 *            来表示靠右
 	 */
 	public void setmGravityType(int mGravityType) {
 		this.mGravityType = mGravityType;
@@ -332,12 +334,12 @@ public class Zhang_ViewPagerAndPoint {
 		this.imageViews = imageViews;
 		this.context = context;
 	}
-
+	private Zhang_ViewPager viewPager;
 	/**
 	 * 程序入口,在此之前请对圆点进行设置，并将返回的FrameLayout加入到你要显示的页面的布局中
 	 */
 	public FrameLayout setViewPagerAndPoint() {
-		Zhang_ViewPager viewPager = new Zhang_ViewPager(context);
+		viewPager = new Zhang_ViewPager(context);
 		LinearLayout vpl = setViewPager(viewPager);
 		LinearLayout dotl = setDots(viewPager);
 		startInit(viewPager);
@@ -376,8 +378,7 @@ public class Zhang_ViewPagerAndPoint {
 	}
 
 	/**
-	 * @param {@link #dotHeight}
-	 *            点的大小，是正方形的
+	 * @param {@link #dotHeight} 点的大小，是正方形的
 	 */
 	public void setDotHeight(int dotHeight) {
 		this.dotHeight = dotHeight;
@@ -435,7 +436,9 @@ public class Zhang_ViewPagerAndPoint {
 		this.pagerClick = pagerClick;
 	}
 
-	private void setVPonChange(Zhang_ViewPager viewPager) {
+	private boolean isContinue = true;
+
+	private void setVPonChange(final Zhang_ViewPager viewPager) {
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(final int arg0) {
@@ -443,11 +446,11 @@ public class Zhang_ViewPagerAndPoint {
 					dots[i].setBackgroundResource(dot_normal);
 				}
 				dots[arg0 % imageViews.size()].setBackgroundResource(dot_focus);
-				imageViews.get(arg0 % imageViews.size()).setOnClickListener(new OnClickListener() {
+				imageViews.get(viewPager.getCurrentItem() % imageViews.size()).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						if (pagerClick != null) {
-							pagerClick.pagerDoSomething(v, arg0 % imageViews.size());
+							pagerClick.pagerDoSomething(v, viewPager.getCurrentItem() % imageViews.size());
 						}
 					}
 				});
@@ -456,15 +459,34 @@ public class Zhang_ViewPagerAndPoint {
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				if (pagerScrolled != null) {
-					pagerScrolled.pagerScrolled(arg0 % imageViews.size(), arg1, arg2);
+					pagerScrolled.pagerScrolled(viewPager.getCurrentItem() % imageViews.size(), arg1, arg2);
 				}
 			}
 
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 				if (pagerScrollStateChanged != null) {
-					pagerScrollStateChanged.pagerScrollStateChanged(arg0);
+					pagerScrollStateChanged.pagerScrollStateChanged(viewPager.getCurrentItem());
 				}
+			}
+		});
+		viewPager.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_MOVE:
+					isContinue = false;
+					break;
+				case MotionEvent.ACTION_UP:
+					isContinue = true;
+					break;
+				default:
+					isContinue = true;
+					break;
+				}
+				return false;
 			}
 		});
 	}
@@ -517,8 +539,8 @@ public class Zhang_ViewPagerAndPoint {
 
 	/**
 	 * @param animationType
-	 *            滑动的动画的效果，通过常量来选择 默认无效果 即平滑滑动
-	 *            使用  {@link	#ANIMATION_DepthPageTransformer} 或者
+	 *            滑动的动画的效果，通过常量来选择 默认无效果 即平滑滑动 使用
+	 *            {@link #ANIMATION_DepthPageTransformer} 或者
 	 *            {@link #ANIMATION_ZoomOutPageTransformer}
 	 */
 	public void setAnimationType(int animationType) {
@@ -539,17 +561,42 @@ public class Zhang_ViewPagerAndPoint {
 		default:
 			break;
 		}
-		viewpagerRunnable = new Runnable() {
+		// viewpagerRunnable = new Runnable() {
+		// @Override
+		// public void run() {
+		// int nowIndex = vp.getCurrentItem();
+		// vp.setCurrentItem(nowIndex + 1, true);
+		// if (isContinue) {
+		// vp.postDelayed(viewpagerRunnable, TIME);
+		// }
+		// }
+		// };
+		// handler.postDelayed(viewpagerRunnable, TIME);
+		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				int nowIndex = vp.getCurrentItem();
-				vp.setCurrentItem(nowIndex + 1, true);
-				vp.postDelayed(viewpagerRunnable, TIME);
+				while (true) {
+					if (isContinue) {
+						Message message = Message.obtain();
+						message.arg1 = vp.getCurrentItem()+1;
+						mHandler.sendMessage(message);
+						try {
+							Thread.sleep(TIME);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
 			}
-		};
-		handler.postDelayed(viewpagerRunnable, TIME);
+		}).start();
 	}
-
+	private Handler mHandler=new Handler(){
+		public void handleMessage(Message msg) {
+			viewPager.setCurrentItem(msg.arg1);
+		};
+	};
 	/**
 	 * @param handler
 	 *            new一个handler就可以,开启自动滑动
@@ -750,7 +797,7 @@ class MyVPAdapter extends PagerAdapter {
 
 	@Override
 	public Object instantiateItem(final View container, final int position) {
-		((ViewPager) container).addView(imageViews.get(position % imageViews.size()));
+		((ViewPager) container).addView(imageViews.get(position % imageViews.size()), 0);
 		ImageView iv = imageViews.get(position % imageViews.size());
 		// ((ViewPager) container).addView(imageViews.get(position));
 		// ImageView iv = imageViews.get(position);
