@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         l=(LinearLayout) findViewById(R.id.sdss);
         ArrayList<ImageView> lists=getImages();
 		final Zhang_ViewPagerAndPoint vp=new Zhang_ViewPagerAndPoint(MainActivity.this,lists);
-		vp.startRoll(new Handler());
+		vp.startRoll(false);
 		vp.setOnPagerClick(new onPagerClick() {
 			@Override
 			public void pagerDoSomething(View imageView, int positon) {
@@ -61,7 +61,9 @@ public class MainActivity extends Activity {
 			ivs.add(iv4);
 		return ivs;
 	}
-
+	private <T extends View> T $(int id){
+		return (T)super.findViewById(id);
+	}
 
     
 }

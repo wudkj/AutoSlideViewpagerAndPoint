@@ -102,7 +102,10 @@ public class Zhang_ViewPagerAndPoint {
 	 * 靠左显示
 	 */
 	public static final int GRAVITY_LINE_LEFT = 2;
-
+	/**
+	 * 默认为不滚动
+	 */
+	private boolean startRoll=false;
 	public static class Builder {
 		private Context context;
 		private ArrayList<ImageView> imageViews = new ArrayList<ImageView>();
@@ -119,10 +122,10 @@ public class Zhang_ViewPagerAndPoint {
 		private int bottomMargings = 35;
 		private onPageScrollStateChanged pagerScrollStateChanged;
 		private onPagerScrolled pagerScrolled;
-		private Handler handler;
 		private int scrollDuration = 1000;
 		private int time;
 		private int animationType;
+		private boolean startRoll=false;
 
 		/**
 		 * @param animationType
@@ -157,8 +160,8 @@ public class Zhang_ViewPagerAndPoint {
 		 * @param handler
 		 *            new一个handler就可以 是否要开启定时滑动
 		 */
-		public Builder startRoll(Handler handler) {
-			this.handler = handler;
+		public Builder startRoll() {
+			startRoll=true;
 			return this;
 		}
 
@@ -272,7 +275,7 @@ public class Zhang_ViewPagerAndPoint {
 			vp.setmLeftMargin(mLeftMargin);
 			vp.setOnPagerScrolled(pagerScrolled);
 			vp.setOnPagerScrollStateChanged(pagerScrollStateChanged);
-			vp.startRoll(handler);
+			vp.startRoll(startRoll);
 			vp.setTIME(time);
 			vp.setScrollDuration(scrollDuration);
 			vp.setAnimationType(animationType);
@@ -346,8 +349,8 @@ public class Zhang_ViewPagerAndPoint {
 		ViewPagerScroller scroller = new ViewPagerScroller(context);
 		scroller.setScrollDuration(scrollDuration);
 		scroller.initViewPagerScroll(viewPager);
-		if (handler != null) {
-			initRunnable(viewPager, imageViews, handler);
+		if (startRoll) {
+			initRunnable(viewPager, imageViews);
 		}
 		return setMainLinearLayout(vpl, dotl);
 	}
@@ -522,7 +525,6 @@ public class Zhang_ViewPagerAndPoint {
 
 	/** 定时更新任务 */
 	private Runnable viewpagerRunnable;
-	private Handler handler;
 	private int TIME = 3000;
 	// 滑动的动画的效果
 	private int animationType = 0;
@@ -550,7 +552,7 @@ public class Zhang_ViewPagerAndPoint {
 	/**
 	 * 定时切换
 	 */
-	protected void initRunnable(final ViewPager vp, final ArrayList<ImageView> imageViews, final Handler handler) {
+	protected void initRunnable(final ViewPager vp, final ArrayList<ImageView> imageViews) {
 		switch (animationType) {
 		case ANIMATION_DepthPageTransformer:
 			vp.setPageTransformer(true, new DepthPageTransformer());
@@ -601,8 +603,8 @@ public class Zhang_ViewPagerAndPoint {
 	 * @param handler
 	 *            new一个handler就可以,开启自动滑动
 	 */
-	public void startRoll(Handler handler) {
-		this.handler = handler;
+	public void startRoll(boolean startRoll) {
+		this.startRoll = startRoll;
 	}
 
 	public void addImageViews(ArrayList<ImageView> lists) {

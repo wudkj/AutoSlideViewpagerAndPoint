@@ -16,7 +16,7 @@
 
 
     Zhang_ViewPagerAndPoint vp=new Zhang_ViewPagerAndPoint(MainActivity.this,lists);//实例化出一个对象通过其中的方法来实现对于下方的点的控制以及自动滑动的开启（包括滑动的动画，内置两种动画，以及一种默认）
-    vp.startRoll(new Handler());//自动滑动的开启
+    vp.startRoll(true);//自动滑动的开启
     vp.setOnPage...Listener();//用来对viewpager的滑动事件进行控制
     vp.setmGravityType();//设置下方的点的对齐方式 使用常量
     vp.setAnimationType();//设置动画种类 使用常量
