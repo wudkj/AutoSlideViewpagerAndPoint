@@ -26,9 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Scroller;
 
-import com.example.vp.Zhang_ViewPager.onPageScrollStateChanged;
-import com.example.vp.Zhang_ViewPager.onPagerClick;
-import com.example.vp.Zhang_ViewPager.onPagerScrolled;
 
 /**
  * @author 张小康 E-mail:wudkj@163.com
@@ -622,7 +619,37 @@ public class Zhang_ViewPagerAndPoint {
 	public void addImageInBottom(ImageView iv) {
 		imageViews.add(imageViews.size(), iv);
 	}
+	public interface onPagerClick {
+		/**
+		 * 想用就用，不想用也没事
+		 * 
+		 * @param v
+		 *            你点击的图片的view
+		 * @param positon
+		 *            点击的图片是第几个
+		 */
+		public void pagerDoSomething(View imageView, int positon);
+	}
 
+	public interface onPagerScrolled {
+		/**
+		 * @param arg0
+		 *            arg0:当前页面，及你点击滑动的页面
+		 * @param arg1
+		 *            arg1:当前页面偏移的百分比
+		 * @param arg2
+		 *            arg2:当前页面偏移的像素位置
+		 */
+		public void pagerScrolled(int arg0, float arg1, int arg2);
+	}
+
+	public interface onPageScrollStateChanged {
+		/**
+		 * @param arg0
+		 *            当前滑动的状态
+		 */
+		public void pagerScrollStateChanged(int arg0);
+	}
 }
 
 class DepthPageTransformer implements PageTransformer {
@@ -832,37 +859,5 @@ class Zhang_ViewPager extends ViewPager {
 	@Override
 	public void setCurrentItem(int item) {
 		super.setCurrentItem(item);
-	}
-
-	public interface onPagerClick {
-		/**
-		 * 想用就用，不想用也没事
-		 * 
-		 * @param v
-		 *            你点击的图片的view
-		 * @param positon
-		 *            点击的图片是第几个
-		 */
-		public void pagerDoSomething(View imageView, int positon);
-	}
-
-	public interface onPagerScrolled {
-		/**
-		 * @param arg0
-		 *            arg0:当前页面，及你点击滑动的页面
-		 * @param arg1
-		 *            arg1:当前页面偏移的百分比
-		 * @param arg2
-		 *            arg2:当前页面偏移的像素位置
-		 */
-		public void pagerScrolled(int arg0, float arg1, int arg2);
-	}
-
-	public interface onPageScrollStateChanged {
-		/**
-		 * @param arg0
-		 *            当前滑动的状态
-		 */
-		public void pagerScrollStateChanged(int arg0);
 	}
 }

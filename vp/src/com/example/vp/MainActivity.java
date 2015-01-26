@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.vp.Zhang_ViewPager.onPagerClick;
-import com.example.vp.Zhang_ViewPager.onPagerScrolled;
+import com.example.vp.Zhang_ViewPagerAndPoint.onPagerClick;
+import com.example.vp.Zhang_ViewPagerAndPoint.onPagerScrolled;
+
 
 
 public class MainActivity extends Activity {
